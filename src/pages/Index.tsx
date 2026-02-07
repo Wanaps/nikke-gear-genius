@@ -70,7 +70,7 @@ const Index = () => {
             Data sourced from nikke.gg • Not affiliated with SHIFT UP
           </p>
           <p className="text-xs font-body text-muted-foreground">
-            Made by <span className="text-primary font-display">Wanaps</span>
+            © {new Date().getFullYear()} <span className="text-primary font-display">Wanaps</span>. All rights reserved.
           </p>
         </footer>
       </div>
