@@ -14,6 +14,12 @@ import {
 } from "@/data/nikkeData";
 import { StatLine, StatLineData } from "./StatLine";
 import { GradeBadge } from "./GradeBadge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const SLOT_ICONS: Record<EquipmentSlot, React.ReactNode> = {
   Head: <Crosshair className="w-5 h-5" />,
@@ -21,6 +27,8 @@ const SLOT_ICONS: Record<EquipmentSlot, React.ReactNode> = {
   Arm: <Hand className="w-5 h-5" />,
   Leg: <Footprints className="w-5 h-5" />,
 };
+
+const LOW_TIER_GRADES: Grade[] = ["F", "C", "B"];
 
 interface EquipmentCardProps {
   slot: EquipmentSlot;
@@ -47,6 +55,7 @@ export function EquipmentCard({ slot, character, onScoreChange }: EquipmentCardP
   }, 0);
 
   const pieceGrade = isOverload && pieceScore > 0 ? getGrade(pieceScore) : null;
+  const showRerollAdvice = pieceGrade !== null && LOW_TIER_GRADES.includes(pieceGrade);
 
   // Report score up
   const prevScore = useState(0);
@@ -67,7 +76,7 @@ export function EquipmentCard({ slot, character, onScoreChange }: EquipmentCardP
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="cyber-border rounded-lg overflow-hidden"
+      className="cyber-border rounded-lg"
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
@@ -75,7 +84,21 @@ export function EquipmentCard({ slot, character, onScoreChange }: EquipmentCardP
           {SLOT_ICONS[slot]}
           <span className="font-display text-sm tracking-wide">{slot}</span>
         </div>
-        {pieceGrade && <GradeBadge grade={pieceGrade} size="sm" score={pieceScore} />}
+        <div className="flex items-center gap-1.5">
+          {pieceGrade && <GradeBadge grade={pieceGrade} size="sm" score={pieceScore} />}
+          {showRerollAdvice && (
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="text-[hsl(var(--neon-yellow))] cursor-help text-base">🔄</span>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="text-xs">
+                  Suboptimal performance. Recommended to reroll attributes.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
       </div>
 
       {/* Gear Level Toggle */}
