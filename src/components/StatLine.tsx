@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Lock, Unlock, ChevronDown } from "lucide-react";
+import { Lock, Unlock, ChevronDown, X } from "lucide-react";
 import ReactDOM from "react-dom";
 import { STAT_NAMES, RNG_TABLES, getTierFromValue, getQualityScore, getWeightedScore, getLineGrade, CharacterProfile, Grade } from "@/data/nikkeData";
 import { GradeBadge } from "./GradeBadge";
@@ -88,6 +88,17 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
           <span className="text-xs text-muted-foreground">—</span>
         )}
       </div>
+
+      {/* Clear button */}
+      {data.statName && (
+        <button
+          onClick={() => onChange({ statName: "", value: null, locked: false })}
+          className="p-1 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+          title="Clear stat"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
     </div>
   );
 }
