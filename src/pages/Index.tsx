@@ -65,9 +65,12 @@ const Index = () => {
         <GlobalResult totalScore={totalScore} characterName={character?.name ?? null} />
 
         {/* Footer */}
-        <footer className="text-center py-4 border-t border-border">
+        <footer className="text-center py-4 border-t border-border space-y-1">
           <p className="text-xs font-body text-muted-foreground">
             Data sourced from nikke.gg • Not affiliated with SHIFT UP
+          </p>
+          <p className="text-xs font-body text-muted-foreground">
+            Made by <span className="text-primary font-display">Wanaps</span>
           </p>
         </footer>
       </div>
