@@ -8,7 +8,8 @@ interface GlobalResultProps {
 }
 
 export function GlobalResult({ totalScore, characterName }: GlobalResultProps) {
-  const grade = totalScore > 0 ? getGrade(totalScore) : null;
+  const averageScore = totalScore / 4;
+  const grade = averageScore > 0 ? getGrade(averageScore) : null;
 
   return (
     <motion.div
@@ -22,19 +23,19 @@ export function GlobalResult({ totalScore, characterName }: GlobalResultProps) {
 
       {grade && characterName ? (
         <div className="space-y-3">
-          <GradeBadge grade={grade} size="xl" score={totalScore} />
+          <GradeBadge grade={grade} size="xl" score={Math.round(averageScore)} />
           <p className="text-sm font-body text-muted-foreground mt-2">
-            {totalScore > 350
+            {averageScore > 350
               ? "🐋 Whale territory! Perfect gear."
-              : totalScore > 250
+              : averageScore > 250
               ? "🔥 Godlike rolls. Top-tier equipment."
-              : totalScore > 180
+              : averageScore > 180
               ? "⚡ Excellent gear. Very competitive."
-              : totalScore > 120
+              : averageScore > 120
               ? "✨ Solid gear. Battle-ready."
-              : totalScore > 80
+              : averageScore > 80
               ? "👍 Decent gear. Room for improvement."
-              : totalScore > 50
+              : averageScore > 50
               ? "😐 Average gear. Keep farming."
               : "💀 Re-roll this gear."}
           </p>

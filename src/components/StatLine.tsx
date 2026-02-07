@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Lock, Unlock, ChevronDown } from "lucide-react";
-import { STAT_NAMES, RNG_TABLES, getTierFromValue, getQualityScore, getWeightedScore, getLineGrade, CharacterProfile } from "@/data/nikkeData";
+import ReactDOM from "react-dom";
+import { STAT_NAMES, RNG_TABLES, getTierFromValue, getQualityScore, getWeightedScore, getLineGrade, CharacterProfile, Grade } from "@/data/nikkeData";
 import { GradeBadge } from "./GradeBadge";
-import { useRef, useEffect } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export interface StatLineData {
   statName: string;
@@ -17,11 +23,15 @@ interface StatLineProps {
   onChange: (data: StatLineData) => void;
 }
 
+const HIGH_TIER_GRADES: Grade[] = ["S", "SS", "SSS", "OP"];
+
 export function StatLine({ data, character, usedStats, onChange }: StatLineProps) {
   const tier = data.statName && data.value !== null ? getTierFromValue(data.statName, data.value) : 0;
   const quality = getQualityScore(tier);
   const weighted = getWeightedScore(quality, data.statName, character);
   const grade = tier > 0 ? getLineGrade(weighted) : null;
+
+  const showLockAdvice = grade !== null && HIGH_TIER_GRADES.includes(grade);
 
   const availableStats = STAT_NAMES.filter(
     (s) => s === data.statName || !usedStats.includes(s)
@@ -38,7 +48,7 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
       </button>
 
       {/* Stat selector */}
-      <MiniDropdown
+      <PortalDropdown
         value={data.statName}
         options={availableStats}
         placeholder="Stat..."
@@ -47,7 +57,7 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
       />
 
       {/* Value selector */}
-      <MiniDropdown
+      <PortalDropdown
         value={data.value !== null ? `${data.value}%` : ""}
         options={data.statName ? (RNG_TABLES[data.statName] || []).map((v) => `${v}%`) : []}
         placeholder="Value..."
@@ -56,16 +66,34 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
         disabled={!data.statName}
       />
 
-      {/* Grade */}
-      <div className="w-12 flex justify-center shrink-0">
-        {grade ? <GradeBadge grade={grade} size="sm" /> : <span className="text-xs text-muted-foreground">—</span>}
+      {/* Grade + Lock Advice */}
+      <div className="w-16 flex items-center justify-center gap-1 shrink-0">
+        {grade ? (
+          <>
+            <GradeBadge grade={grade} size="sm" />
+            {showLockAdvice && (
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-[hsl(var(--neon-yellow))] cursor-help text-sm">🔒</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-xs">
+                    Top Tier Stat. Recommended to lock this line.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        )}
       </div>
     </div>
   );
 }
 
-// Mini dropdown component
-function MiniDropdown({
+// Portal-based dropdown to avoid clipping
+function PortalDropdown({
   value,
   options,
   placeholder,
@@ -81,19 +109,34 @@ function MiniDropdown({
   disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ top: 0, left: 0, width: 0 });
+
+  useEffect(() => {
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 4, left: rect.left, width: Math.max(rect.width, 120) });
+    }
+  }, [open]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (
+        dropdownRef.current && !dropdownRef.current.contains(e.target as Node) &&
+        triggerRef.current && !triggerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   return (
-    <div ref={ref} className={`relative ${className}`}>
+    <div className={`relative ${className}`}>
       <button
+        ref={triggerRef}
         disabled={disabled}
         onClick={() => !disabled && setOpen(!open)}
         className={`w-full flex items-center gap-1 px-2 py-1.5 rounded text-xs font-body border border-border bg-secondary/50 hover:bg-secondary transition-colors truncate ${
@@ -103,21 +146,27 @@ function MiniDropdown({
         <span className="truncate">{value || placeholder}</span>
         <ChevronDown className="w-3 h-3 shrink-0 ml-auto" />
       </button>
-      {open && (
-        <div className="absolute z-50 mt-1 w-full min-w-[120px] max-h-48 overflow-y-auto rounded border border-border bg-popover shadow-lg">
-          {options.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => { onChange(opt); setOpen(false); }}
-              className={`w-full text-left px-2 py-1.5 text-xs font-body hover:bg-secondary transition-colors ${
-                opt === value ? "bg-secondary text-foreground" : "text-foreground/80"
-              }`}
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
-      )}
+      {open &&
+        ReactDOM.createPortal(
+          <div
+            ref={dropdownRef}
+            style={{ position: "fixed", top: pos.top, left: pos.left, width: pos.width, zIndex: 9999 }}
+            className="max-h-48 overflow-y-auto rounded border border-border bg-popover shadow-lg"
+          >
+            {options.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => { onChange(opt); setOpen(false); }}
+                className={`w-full text-left px-2 py-1.5 text-xs font-body hover:bg-secondary transition-colors ${
+                  opt === value ? "bg-secondary text-foreground" : "text-foreground/80"
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
