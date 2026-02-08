@@ -4,6 +4,7 @@ import { CHARACTERS, EQUIPMENT_SLOTS, CharacterProfile, EquipmentSlot } from "@/
 import { CharacterSelector } from "@/components/CharacterSelector";
 import { EquipmentCard } from "@/components/EquipmentCard";
 import { GlobalResult } from "@/components/GlobalResult";
+import { TacticalHUD } from "@/components/TacticalHUD";
 
 const Index = () => {
   const [character, setCharacter] = useState<CharacterProfile | null>(null);
@@ -48,6 +49,13 @@ const Index = () => {
             onSelect={setCharacter}
           />
         </section>
+
+        {/* Tactical HUD */}
+        {character && (
+          <section>
+            <TacticalHUD character={character} />
+          </section>
+        )}
 
         {/* Equipment Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
