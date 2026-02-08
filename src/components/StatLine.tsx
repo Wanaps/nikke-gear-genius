@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { Lock, Unlock, ChevronDown, X } from "lucide-react";
+import { Lock, Unlock, ChevronDown, X, Info } from "lucide-react";
 import ReactDOM from "react-dom";
 import { STAT_NAMES, RNG_TABLES, getTierFromValue, getQualityScore, getWeightedScore, getLineGrade, CharacterProfile, Grade } from "@/data/nikkeData";
 import { GradeBadge } from "./GradeBadge";
+import { getStatAdvice } from "@/lib/statAdvice";
 import {
   Tooltip,
   TooltipContent,
@@ -32,6 +33,7 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
   const grade = tier > 0 ? getLineGrade(weighted) : null;
 
   const showLockAdvice = grade !== null && HIGH_TIER_GRADES.includes(grade);
+  const advice = grade ? getStatAdvice(data.statName, grade, character) : null;
 
   const availableStats = STAT_NAMES.filter(
     (s) => s === data.statName || !usedStats.includes(s)
@@ -67,7 +69,7 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
       />
 
       {/* Grade + Lock Advice */}
-      <div className="w-16 flex items-center justify-center gap-1 shrink-0">
+      <div className="w-20 flex items-center justify-center gap-1 shrink-0">
         {grade ? (
           <>
             <GradeBadge grade={grade} size="sm" />
@@ -79,6 +81,21 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
                   </TooltipTrigger>
                   <TooltipContent side="top" className="text-xs">
                     Top Tier Stat. Recommended to lock this line.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            {advice && (
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help text-muted-foreground hover:text-foreground transition-colors">
+                      <Info className="w-3 h-3" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-xs max-w-[200px]">
+                    <p>{advice.text}</p>
+                    {advice.target && <p className="mt-1 text-[hsl(var(--neon-yellow))]">{advice.target}</p>}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

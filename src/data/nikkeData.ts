@@ -296,5 +296,5 @@ export function getGradeBg(grade: Grade): string {
 }
 
 export function getCharacterImageUrl(imageKey: string): string {
-  return `https://static.dotgg.gg/nikke/icon/character/${imageKey}.png`;
+  return `/images/characters/${imageKey}.png`;
 }
