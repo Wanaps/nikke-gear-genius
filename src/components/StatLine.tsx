@@ -68,24 +68,23 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
         disabled={!data.statName}
       />
 
-      {/* Grade + Lock Advice */}
+      {/* Grade + Advice */}
       <div className="w-20 flex items-center justify-center gap-1 shrink-0">
         {grade ? (
           <>
             <GradeBadge grade={grade} size="sm" />
-            {showLockAdvice && (
+            {showLockAdvice ? (
               <TooltipProvider delayDuration={200}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="text-[hsl(var(--neon-yellow))] cursor-help text-sm">🔒</span>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="text-xs">
-                    Top Tier Stat. Recommended to lock this line.
+                    Excellent stat. LOCK this immediately.
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            )}
-            {advice && (
+            ) : advice ? (
               <TooltipProvider delayDuration={200}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -99,7 +98,7 @@ export function StatLine({ data, character, usedStats, onChange }: StatLineProps
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            )}
+            ) : null}
           </>
         ) : (
           <span className="text-xs text-muted-foreground">—</span>
