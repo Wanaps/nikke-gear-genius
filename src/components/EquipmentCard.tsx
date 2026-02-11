@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Shield, Crosshair, Hand, Footprints } from "lucide-react";
 import { motion } from "framer-motion";
 import {
@@ -22,21 +22,49 @@ import {
 } from "@/components/ui/tooltip";
 
 const SLOT_ICONS: Record<EquipmentSlot, React.ReactNode> = {
-  Head: <Crosshair className="w-5 h-5" />,
-  Torso: <Shield className="w-5 h-5" />,
-  Arm: <Hand className="w-5 h-5" />,
-  Leg: <Footprints className="w-5 h-5" />,
+  Head: (
+    <img 
+      src="/images/card_assets/stats/equipments/head_icon.png" 
+      className="w-5 h-5 object-contain" 
+      alt="Head"
+      onError={(e) => (e.currentTarget.style.opacity = '0')} 
+    />
+  ),
+  Torso: (
+    <img 
+      src="/images/card_assets/stats/equipments/torso_icon.png" 
+      className="w-5 h-5 object-contain" 
+      alt="Torso"
+      onError={(e) => (e.currentTarget.style.opacity = '0')}
+    />
+  ),
+  Arm: (
+    <img 
+      src="/images/card_assets/stats/equipments/arm_icon.png" 
+      className="w-5 h-5 object-contain" 
+      alt="Arm"
+      onError={(e) => (e.currentTarget.style.opacity = '0')}
+    />
+  ),
+  Leg: (
+    <img 
+      src="/images/card_assets/stats/equipments/leg_icon.png" 
+      className="w-5 h-5 object-contain" 
+      alt="Leg"
+      onError={(e) => (e.currentTarget.style.opacity = '0')}
+    />
+  ),
 };
-
 const LOW_TIER_GRADES: Grade[] = ["F", "C", "B"];
 
 interface EquipmentCardProps {
   slot: EquipmentSlot;
   character: CharacterProfile | null;
   onScoreChange: (slot: EquipmentSlot, score: number) => void;
+  onStatsChange?: (slot: EquipmentSlot, stats: StatLineData[]) => void;
 }
 
-export function EquipmentCard({ slot, character, onScoreChange }: EquipmentCardProps) {
+export function EquipmentCard({ slot, character, onScoreChange, onStatsChange }: EquipmentCardProps) {
   const [gearLevel, setGearLevel] = useState<GearLevel>("OVERLOAD");
   const [stats, setStats] = useState<StatLineData[]>([
     { statName: "", value: null, locked: false },
@@ -71,6 +99,11 @@ export function EquipmentCard({ slot, character, onScoreChange }: EquipmentCardP
     next[index] = newData;
     setStats(next);
   };
+
+  // Notify parent when stats change
+  useEffect(() => {
+    if (onStatsChange) onStatsChange(slot, stats);
+  }, [stats, onStatsChange, slot]);
 
   return (
     <motion.div

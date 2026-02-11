@@ -1,0 +1,429 @@
+.card {
+    width: 500px; 
+    height: 280px;
+    background-color: #1B1B1B; 
+    position: relative;
+    overflow: hidden;
+    border-radius:20px;
+}
+
+.layer-background {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 120px;
+    height: 260px;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.burst-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    opacity: 0.4;
+    filter: blur(2px);
+}
+
+.layer-character {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    top: 20px;
+    left: 5px;
+    bottom: 10px;
+    padding-left: 11px; 
+    padding-bottom: 6px;
+}
+
+.main-char-img {
+    height: 105%;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+}
+
+.layer-ui {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    padding-left: 200px; 
+    padding-top: 5px;
+    padding-bottom: 25px; 
+    color: white;
+    box-sizing: border-box; 
+}
+
+.gears-container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.header-container {
+    display: block;
+    width: 300px;
+    height: 100px;
+}
+
+.name-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+    gap: 5px;
+}
+
+.char-name {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: clamp(1.1rem, 4vw, 1.8rem); 
+    font-weight: 750;
+    line-height: 1;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 280px; 
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+}
+
+.rarity-icon {
+    height: 22px;
+    width: auto;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.icons-row {
+    display: block;
+    margin-top: 10px;
+    height: 30px;
+}
+
+.type-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+    display: inline-block;
+    object-fit: contain;
+}
+
+.score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0px;
+}
+
+.score-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+.score-badge {
+    height: 21px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.4)); 
+}
+
+.score-badge.grade-sss,
+.gear-rank-badge.grade-sss,
+.stat-rank-badge.grade-sss {
+    filter: drop-shadow(0 0 5px rgba(255, 84, 82, 0.4));
+}
+
+.score-badge.grade-ss,
+.gear-rank-badge.grade-ss,
+.stat-rank-badge.grade-ss {
+    filter: drop-shadow(0 0 5px rgba(255, 163, 62, 0.4));
+}
+
+.score-badge.grade-s,
+.gear-rank-badge.grade-s,
+.stat-rank-badge.grade-s {
+    filter: drop-shadow(0 0 5px rgba(255, 214, 63, 0.4));
+}
+
+.score-badge.grade-a,
+.gear-rank-badge.grade-a,
+.stat-rank-badge.grade-a {
+    filter: drop-shadow(0 0 5px rgba(69, 242, 138, 0.4));
+}
+
+.score-badge.grade-b,
+.gear-rank-badge.grade-b,
+.stat-rank-badge.grade-b {
+    filter: drop-shadow(0 0 5px rgba(80, 180, 255, 0.4));
+}
+
+.score-badge.grade-c,
+.gear-rank-badge.grade-c,
+.stat-rank-badge.grade-c {
+    filter: drop-shadow(0 0 5px rgba(173, 164, 150, 0.4));
+}
+
+.score-badge.grade-f,
+.gear-rank-badge.grade-f,
+.stat-rank-badge.grade-f {
+    filter: drop-shadow(0 0 5px rgba(173, 164, 150, 0.4));
+}
+
+.score-badge.grade-op,
+.gear-rank-badge.grade-op,
+.stat-rank-badge.grade-op {
+    filter: drop-shadow(0 0 5px rgba(255, 79, 255, 0.4));
+}
+
+.best-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1px;
+}
+
+.best-stats-label {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.best-stats-value {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #FFA500;
+}
+
+.gear-grid {
+
+    display: grid;
+    grid-template-columns: 140px 140px;
+    gap: 0px;
+}
+
+.gear-card {
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column; 
+}
+
+.gear-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.gear-title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.stat-icons-row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.stat-icon-small {
+    height: 9px;
+    width: auto;
+    object-fit: contain;
+}
+
+.stat-name {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.55rem;
+    margin-bottom: 2px;
+}
+
+.progress-container {
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+}
+
+.gear-slot-icon, .gear-rank-badge {
+    height: 13px;
+    width: auto;
+    object-fit: contain;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    margin-bottom: -5px;
+}
+
+.stat-rank-badge {
+    height: 9px;
+    width: auto;
+}
+
+.stat-name {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 0.55rem;
+    margin-top: 2px;
+    text-align: left;
+    
+    white-space: nowrap;
+}
+
+.stat-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin-top: -2px;
+}
+
+/* .gear-stats-list {
+    background-color: #FFA500;
+} */
+
+.user-info-overlay {
+    position: absolute;
+    top: 8px; 
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 20;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.user-display-name {
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.user-friend-code {
+    font-size: 0.45rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: monospace;
+    white-space: nowrap;
+}
+
+.name-wrapper {
+    margin-top: 12px; 
+    position: relative;
+    z-index: 10;
+}
+
+.site-watermark {
+    position: absolute;
+    bottom: 2px; 
+    left: 15px;
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    z-index: 30;
+    
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+    white-space: nowrap;
+}
+
+.search-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.search-group > :first-child {
+    flex: 1;
+}
+
+.clear-btn {
+    height: 42px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: transparent;
+    border: 1px solid #FF0000;
+    color: #FF0000;
+    
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+.clear-btn:active {
+    transform: scale(0.95);
+}
+
+.action-btn-round {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid #FF0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+.action-btn-round:hover {
+    background: rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    transform: translateY(-3px);
+}
+
+.action-btn-round img {
+    filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.5));
+}
