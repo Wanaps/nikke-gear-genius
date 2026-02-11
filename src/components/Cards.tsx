@@ -91,9 +91,8 @@ const handleCopy = async () => {
       })
     });
     await navigator.clipboard.write([clipboardItem]);
-    alert("🚀 Image HD (1600x897) copiée !");
   } catch (err) {
-    console.error("Erreur copie:", err);
+    console.error("Error copying image:", err);
   }
 };
 
