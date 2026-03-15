@@ -221,7 +221,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "wind",
     burst: "2",
     weapon: "AR",
-    skins: [ "base", "fortune express", "no. 77 batter", "white rabbit" ],
+    skins: [ "base", "fortune express", "no 77 batter", "white rabbit" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "good",
