@@ -157,9 +157,9 @@ const handleCopy = async () => {
                           <span className="stat-name">{stat.name} - {stat.value}</span>
                           <img src={`/images/card_assets/stats/ranks/${stat.grade.toLowerCase()}_rank.png`} className={`stat-rank-badge grade-${stat.grade.toLowerCase()}`} />
                         </div>
-                        <div className="progress-container">
+                        {/* <div className="progress-container">
                           <div className="progress-bar" style={{ width: `${stat.percent}%` }}></div>
-                        </div>
+                        </div> */}
                       </div>
                     ))}
                   </div>
