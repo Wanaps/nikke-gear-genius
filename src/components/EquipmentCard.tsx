@@ -115,7 +115,7 @@ export function EquipmentCard({ slot, character, onScoreChange, onStatsChange }:
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <div className="flex items-center gap-2 text-primary">
           {SLOT_ICONS[slot]}
-          <span className="font-display text-sm tracking-wide">{slot}</span>
+          <span className="font-display text-sm tracking-wide neon-text">{slot}</span>
         </div>
         <div className="flex items-center gap-1.5">
           {pieceGrade && <GradeBadge grade={pieceGrade} size="sm" score={pieceScore} />}
@@ -137,19 +137,19 @@ export function EquipmentCard({ slot, character, onScoreChange, onStatsChange }:
       {/* Gear Level Toggle */}
       <div className="flex px-4 py-2 gap-1 border-b border-border">
         {GEAR_LEVELS.map((level) => (
-          <button
-            key={level}
-            onClick={() => setGearLevel(level)}
-            className={`flex-1 px-2 py-1.5 rounded text-xs font-display tracking-wide transition-colors ${
-              gearLevel === level
-                ? level === "OVERLOAD"
-                  ? "bg-primary/20 text-primary border border-primary/40"
-                  : "bg-secondary text-foreground border border-border"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {level}
-          </button>
+        <button
+          key={level}
+          onClick={() => setGearLevel(level)}
+          className={`flex-1 px-2 py-1.5 rounded text-xs font-display tracking-wide transition-all duration-700 ${
+            gearLevel === level
+              ? level === "OVERLOAD"
+                ? "bg-transparent neon-border neon-text border" 
+                : "bg-secondary text-foreground border border-border"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          {level}
+        </button>
         ))}
       </div>
 

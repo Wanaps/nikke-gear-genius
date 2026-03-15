@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { ELEMENT_THEMES } from "@/data/nikkeData";
 import { Zap } from "lucide-react";
 import { CHARACTERS, EQUIPMENT_SLOTS, CharacterProfile, EquipmentSlot, getGrade, getTierFromValue, getQualityScore, getWeightedScore, getLineGrade } from "@/data/nikkeData";
 import { StatLineData } from "@/components/StatLine";
@@ -23,6 +24,49 @@ const Index = () => {
   const [userName, setUserName] = useState("");
   const [friendCode, setFriendCode] = useState("");
 
+  const [selectedSkin, setSelectedSkin] = useState<string>("base");
+  const [burstbgImage, setBurstbgImage] = useState<string>("");
+  useEffect(() => {
+    setSelectedSkin("base");
+  }, [character]);
+
+  useEffect(() => {
+    if (character) {
+      // On récupère la couleur selon l'élément de la Nikke
+      const element = character.code.toLowerCase();
+      const themeColor = ELEMENT_THEMES[element] || ELEMENT_THEMES.default;
+      
+      // On l'injecte dans le CSS
+      document.documentElement.style.setProperty('--primary-theme', themeColor);
+    }
+  }, [character]);
+
+  useEffect(() => {
+    if (character) {
+      const cleanNikke = character.name
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "_")
+        .replace(/:/g, "")
+        .replace(/'/g, "");
+      
+      const cleanSkin = selectedSkin
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "_")
+        .replace(/:/g, "")
+        .replace(/'/g, "");
+
+      const burstPath = `bursts_bg/${cleanNikke}_${cleanSkin}.png`;
+      const img = new Image();
+      img.onload = () => setBurstbgImage(burstPath);
+      img.onerror = () => setBurstbgImage(`bursts_bg/${cleanNikke}_base.png`);
+      img.src = `/images/card_assets/${burstPath}`;
+    } else {
+      setBurstbgImage("");
+    }
+  }, [character, selectedSkin]);
+
   const handleScoreChange = useCallback((slot: EquipmentSlot, score: number) => {
     setScores((prev) => ({ ...prev, [slot]: score }));
     console.log(`⚙️ Score Updated - ${slot}: ${score}`);
@@ -38,7 +82,19 @@ const Index = () => {
   const getCardData = () => {
     if (!character) return null;
 
-    const characterImageName = character.name.toLowerCase().replace(/ /g, "_").replace(/:/g, "");
+  const cleanNikkeName = character.name
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/:/g, "")
+      .replace(/'/g, "");
+
+  const cleanSkinName = selectedSkin
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/:/g, "")
+      .replace(/'/g, "");
 
     const bestStats = Object.entries(character.weights)
       .filter(([, weight]) => weight === "vital" || weight === "important")
@@ -60,8 +116,9 @@ const Index = () => {
       weapon: character.weapon.toLowerCase(),
       globalScore: globalGrade,
       bestStats: bestStats,
-      skinImage: `characters/${characterImageName}_skin.png`,
-      burstbgImage: `bursts_bg/${characterImageName}_burst.png`,
+      skinImage: `characters/${cleanNikkeName}_${cleanSkinName}.png`,
+      burstbgImage: burstbgImage,
+      basebgImage: `cards/${cleanNikkeName}_base.png`,
       rarityImage: `rarity/${character.rarity.toLowerCase()}.png`,
       typeImage: `faction/${character.type.toLowerCase()}.png`,
       codeImage: `code/${character.code.toLowerCase()}_code.png`,
@@ -128,7 +185,7 @@ const Index = () => {
         <header className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2 text-primary">
             <Zap className="w-6 h-6" />
-            <h1 className="font-display text-xl md:text-2xl tracking-wider font-bold glow-text-red">
+            <h1 className="font-display text-xl md:text-2xl tracking-wider font-bold neon-text">
               OVERLOAD GEAR RATER
             </h1>
             <Zap className="w-6 h-6" />
@@ -206,6 +263,55 @@ const Index = () => {
             />
           </div>
         </section>
+
+        {/* Skin Selector */}
+        {character && character.skins && character.skins.length > 1 && (
+          <div className="flex justify-center gap-4 my-6">
+        {character.skins.map((skin) => {
+          const cleanNikke = character.name
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "_")
+            .replace(/:/g, "")
+            .replace(/'/g, "");
+          
+          const cleanSkin = skin
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "_")
+            .replace(/:/g, "")
+            .replace(/'/g, "");
+
+          const iconPath = `/images/card_assets/characters/${cleanNikke}_${cleanSkin}.png`;
+
+          return (
+            <button 
+              key={skin}
+              onClick={() => setSelectedSkin(skin)}
+              className={`flex flex-col items-center p-2 border-2 transition-all ${
+                selectedSkin === skin ? 'neon-border' : 'border-transparent opacity-60'
+              }`}
+            >
+              <div className="w-12 h-16 bg-secondary/50 rounded overflow-hidden mb-1 border border-white/10">
+                <img 
+                  src={iconPath} 
+                  alt={skin}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.log("❌ Erreur chargement icône skin:", iconPath);
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `/images/card_assets/characters/${cleanNikke}_base.png`;
+                  }}
+                />
+              </div>
+              <span className="text-[8px] uppercase tracking-tighter text-muted-foreground">
+                {skin.replace('_', ' ')}
+              </span>
+            </button>
+          );
+        })}
+        </div>
+        )}
 
         {/* Gear Card Preview */}
         {character && getCardData() && (

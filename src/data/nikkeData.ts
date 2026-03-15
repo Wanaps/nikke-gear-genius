@@ -44,6 +44,15 @@ export const WEIGHT_VALUES: Record<WeightCategory, number> = {
   useless: 0,
 };
 
+export const ELEMENT_THEMES: Record<string, string> = {
+  iron: "#FF8C00",
+  elec: "#9D5BFF",
+  fire: "#FF4500",
+  water: "#00BFFF",
+  wind: "#32CD32",
+  default: "#FFA500" 
+};
+
 export interface CharacterProfile {
   name: string;
   imageKey: string;
@@ -52,6 +61,7 @@ export interface CharacterProfile {
   code: string;
   burst: string;
   weapon: string;
+  skins?: string[];
   weights: Record<string, WeightCategory>;
 }
 
@@ -64,6 +74,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "iron",
     burst: "all",
     weapon: "SR",
+    skins: [ "base", "nonsense_red", "retro_days" ],
     weights: {
       "Charge SPD": "vital",
       ATK: "vital",
@@ -84,6 +95,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "fire",
     burst: "3",
     weapon: "SR",
+    skins: [ "base", "first_affection", "second_affection" ],
     weights: {
       ATK: "vital",
       "Elem. DMG": "vital",
@@ -104,6 +116,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "elec",
     burst: "3",
     weapon: "AR",
+    skins: [ "base", "racer's high" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "vital",
@@ -120,10 +133,11 @@ export const CHARACTERS: CharacterProfile[] = [
     name: "Alice",
     imageKey: "alice",
     rarity: "SSR",
-    type: "",
-    code: "",
-    burst: "",
-    weapon: "",
+    type: "tetra",
+    code: "fire",
+    burst: "3",
+    weapon: "SR",
+    skins: [ "base", "marchen dream", "sweet home" ],
     weights: {
       "Charge SPD": "vital",
       "Max Ammo": "vital",
@@ -144,6 +158,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "iron",
     burst: "1",
     weapon: "SG",
+    skins: [ "base", "cute sunflower", "guard fish" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "good",
@@ -164,6 +179,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "iron",
     burst: "2",
     weapon: "MG",
+    skins: [ "base", "glorious flower", "naked king" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "good",
@@ -184,6 +200,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "water",
     burst: "1",
     weapon: "AR",
+    skins: [ "base", "nostalgia", "nostalgia alt" ],
     weights: {
       ATK: "vital",
       "Elem. DMG": "important",
@@ -204,6 +221,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "wind",
     burst: "2",
     weapon: "AR",
+    skins: [ "base", "fortune express", "no. 77 batter", "white rabbit" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "good",
@@ -224,6 +242,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "wind",
     burst: "3",
     weapon: "SG",
+    skins: [ "base", "baseball cheerleader", "black rabbit" ],
     weights: {
       ATK: "vital",
       "Max Ammo": "important",
@@ -244,6 +263,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "iron",
     burst: "1",
     weapon: "RL",
+    skins: [ "base" , "lovely date", "sweet chef" ],
     weights: {
       "Max Ammo": "vital",
       "Charge SPD": "important",
@@ -264,6 +284,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "elec",
     burst: "2",
     weapon: "SG",
+    skins: [ "base", "elegant date", "last girlhood" ],
     weights: {
       ATK: "vital",
       "Elem. DMG": "vital",
@@ -284,6 +305,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "wind",
     burst: "3",
     weapon: "RL",
+    skins: [ "base", "longing flower" ],
     weights: {
       "Max Ammo": "vital",
       ATK: "vital",
@@ -304,6 +326,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "fire",
     burst: "1",
     weapon: "SR",
+    skins: [ "base", "secret party cleaner", "secret police" ],
     weights: {
       "Charge SPD": "vital",
       "Max Ammo": "important",
@@ -324,6 +347,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "iron",
     burst: "3",
     weapon: "SR",
+    skins: [ "base", "mechanic white" ],
     weights: {
       ATK: "vital",
       "Elem. DMG": "vital",
@@ -344,6 +368,7 @@ export const CHARACTERS: CharacterProfile[] = [
     code: "water",
     burst: "3",
     weapon: "AR",
+    skins: [ "base", "designed in blue", "government grunt" ],
     weights: {
       ATK: "vital",
       "Elem. DMG": "vital",
@@ -353,6 +378,111 @@ export const CHARACTERS: CharacterProfile[] = [
       "Max Ammo": "useless",
       "Charge SPD": "useless",
       "Charge DMG": "useless",
+      DEF: "useless",
+    },
+  },
+    {
+    name: "Snow White",
+    imageKey: "snow_white",
+    rarity: "SSR",
+    type: "pilgrim",
+    code: "iron",
+    burst: "3",
+    weapon: "AR",
+    skins: [ "base", "white knight" ],
+    weights: {
+      ATK: "vital",
+      "Elem. DMG": "vital",
+      "Crit Rate": "important",
+      "Crit DMG": "important",
+      "Charge SPD": "good",
+      "Charge DMG": "good",
+      "Hit Rate": "useless",
+      "Max Ammo": "useless",
+      DEF: "useless",
+    },
+  },
+  {
+    name: "Cinderella",
+    imageKey: "cinderella",
+    rarity: "ssr",
+    type: "pilgrim",
+    code: "electric",
+    burst: "3",
+    weapon: "RL",
+    skins: ["base", "glass princess", "beautiful me"],
+    weights: {
+      ATK: "vital",
+      "Elem. DMG": "vital",
+      "Charge SPD": "important",
+      "Crit Rate": "important",
+      "Crit DMG": "good",
+      "Max Ammo": "good",
+      "Charge DMG": "good",
+      "Hit Rate": "useless",
+      DEF: "useless",
+    },
+  },
+  {
+    name: "Volume",
+    imageKey: "volume",
+    rarity: "ssr",
+    type: "elysion",
+    code: "water",
+    burst: "1",
+    weapon: "SMG",
+    skins: [ "base", "beat_the_gun" ],
+    weights: {
+      "Max Ammo": "vital",
+      "Hit Rate": "important",
+      ATK: "good",
+      DEF: "good",
+      "Crit Rate": "useless",
+      "Crit DMG": "useless",
+      "Charge SPD": "useless",
+      "Charge DMG": "useless",
+      "Elem. DMG": "useless",
+    },
+  },
+  {
+    name: "Laplace",
+    imageKey: "laplace",
+    rarity: "ssr",
+    type: "missilis",
+    code: "iron",
+    burst: "3",
+    weapon: "RL",
+    skins: [ "base" ],
+    weights: {
+      ATK: "vital",
+      "Elem. DMG": "vital",
+      "Charge SPD": "important",
+      "Max Ammo": "important",
+      "Charge DMG": "good",
+      "Crit Rate": "good",
+      "Crit DMG": "good",
+      "Hit Rate": "useless",
+      DEF: "useless",
+    },
+  },
+  {
+    name: "Nayuta",
+    imageKey: "nayuta",
+    rarity: "ssr",
+    type: "pilgrim",
+    code: "electric",
+    burst: "1",
+    weapon: "SR",
+    skins: [ "base", "wu wei"],
+    weights: {
+      "Charge SPD": "vital",
+      ATK: "vital",
+      "Elem. DMG": "important",
+      "Max Ammo": "important",
+      "Crit Rate": "good",
+      "Crit DMG": "good",
+      "Charge DMG": "good",
+      "Hit Rate": "useless",
       DEF: "useless",
     },
   },
